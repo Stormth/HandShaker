@@ -1,0 +1,4 @@
+C:/Users/gth15/CLionProjects/HandShaker_rebuild/cmake-build-debug/CMakeFiles/client.dir
+C:/Users/gth15/CLionProjects/HandShaker_rebuild/cmake-build-debug/CMakeFiles/server.dir
+C:/Users/gth15/CLionProjects/HandShaker_rebuild/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/gth15/CLionProjects/HandShaker_rebuild/cmake-build-debug/CMakeFiles/rebuild_cache.dir

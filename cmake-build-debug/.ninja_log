@@ -1,0 +1,17 @@
+# ninja log v5
+2	181	7652136257658369	build.ninja	e8ef286a69a4b2a2
+2	507	7652136299019565	CMakeFiles/client.dir/src/TCPPacket.cpp.obj	d176a85f77c4142e
+23	707	7652136301035984	CMakeFiles/client.dir/src/TCPBuffer.cpp.obj	74490c891218e81c
+16	1575	7652136309705950	CMakeFiles/client.dir/src/SocketWrapper.cpp.obj	5f51bf0f46e30a62
+9	1705	7652136311005230	CMakeFiles/client.dir/client/main.cpp.obj	b9e63cff64248be3
+38	1917	7652136313124925	CMakeFiles/client.dir/src/TCPConnection.cpp.obj	129b9dae7d47f7ea
+31	1955	7652136313507048	CMakeFiles/client.dir/src/AppCommunicator.cpp.obj	8a62cc380d40454a
+6	1462	7652137412421980	CMakeFiles/client.dir/src/TCPConnection.cpp.obj	129b9dae7d47f7ea
+1463	1731	7652137415079591	client.exe	69c46fda8d61ce9
+3	1205	7652139308654033	CMakeFiles/client.dir/client/main.cpp.obj	b9e63cff64248be3
+1206	1460	7652139311159464	client.exe	69c46fda8d61ce9
+7	2610	7652327587530167	CMakeFiles/client.dir/client/main.cpp.obj	b9e63cff64248be3
+31	2876	7652327590216461	CMakeFiles/client.dir/src/AppCommunicator.cpp.obj	8a62cc380d40454a
+20	2885	7652327590304842	CMakeFiles/client.dir/src/TCPConnection.cpp.obj	129b9dae7d47f7ea
+7	2429	7652329835581941	CMakeFiles/client.dir/src/TCPConnection.cpp.obj	129b9dae7d47f7ea
+2431	2926	7652329840464371	client.exe	69c46fda8d61ce9
