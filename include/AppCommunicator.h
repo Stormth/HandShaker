@@ -6,6 +6,7 @@
 #include "TCPConnection.h"
 #include <string>
 #include <vector>
+#include <queue>
 
 class AppCommunicator {
 public:
@@ -17,7 +18,5 @@ public:
 
 private:
     TCPConnection* connection;
-
     std::vector<std::string> splitToWords(const std::string& input);
 };
-

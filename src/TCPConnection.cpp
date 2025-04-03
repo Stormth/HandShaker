@@ -4,29 +4,12 @@
 // TCPConnection.cpp
 // TCPConnection.cpp
 // TCPConnection.cpp
+// TCPConnection.cpp
 #include "TCPConnection.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
 #include <cstring>
-
-TCPConnection::TCPConnection(SocketWrapper* socket, const std::string& role) {
-    this->sock = socket;
-    this->seq_num = 0;
-    this->ack_num = 0;
-    this->role_label = role;
-}
-
-TCPPacket TCPConnection::createDataPacket(const std::string& word) {
-    TCPPacket pkt;
-    pkt.seq_num = seq_num;
-    pkt.ack_num = ack_num;
-    pkt.SYN = false;
-    pkt.ACK = false;
-    pkt.FIN = false;
-    pkt.payload = word;
-    return pkt;
-}
 
 bool TCPConnection::initiateHandshake() {
     TCPPacket syn;
@@ -52,6 +35,24 @@ bool TCPConnection::initiateHandshake() {
     }
 
     return false;
+}
+
+TCPConnection::TCPConnection(SocketWrapper* socket, const std::string& role) {
+    this->sock = socket;
+    this->seq_num = 0;
+    this->ack_num = 0;
+    this->role_label = role;
+}
+
+TCPPacket TCPConnection::createDataPacket(const std::string& word) {
+    TCPPacket pkt;
+    pkt.seq_num = seq_num;
+    pkt.ack_num = ack_num;
+    pkt.SYN = false;
+    pkt.ACK = false;
+    pkt.FIN = false;
+    pkt.payload = word;
+    return pkt;
 }
 
 bool TCPConnection::sendPacket(const TCPPacket& pkt) {
@@ -138,6 +139,13 @@ void TCPConnection::printFromBuffer() {
         std::string word = recv_buffer.pop();
         std::cout << "[" << role_label << "] << " << word << std::endl;
     }
+}
+
+std::string TCPConnection::popWord() {
+    if (!recv_buffer.isEmpty()) {
+        return recv_buffer.pop();
+    }
+    return "";
 }
 
 void TCPConnection::initiateClose() {

@@ -29,7 +29,7 @@ public:
 
     // 缓冲区输出
     void printFromBuffer();
-
+    std::string popWord();
     // 状态查询
     bool isClosed() const { return connection_closed; }
 

@@ -25,3 +25,11 @@
 21	3034	7653562299751609	CMakeFiles/client.dir/src/TCPConnection.cpp.obj	129b9dae7d47f7ea
 27	3035	7653562299772214	CMakeFiles/client.dir/src/AppCommunicator.cpp.obj	8a62cc380d40454a
 3035	4878	7653562318167851	client.exe	69c46fda8d61ce9
+4	1651	7653647438818671	CMakeFiles/client.dir/src/AppCommunicator.cpp.obj	8a62cc380d40454a
+4	299	7653647659041112	client.exe	69c46fda8d61ce9
+4	1644	7653711506031577	CMakeFiles/client.dir/client/main.cpp.obj	b9e63cff64248be3
+3	1562	7653713105165240	CMakeFiles/client.dir/client/main.cpp.obj	b9e63cff64248be3
+10	1741	7653713106966719	CMakeFiles/client.dir/src/TCPConnection.cpp.obj	129b9dae7d47f7ea
+16	1836	7653713107910990	CMakeFiles/client.dir/src/AppCommunicator.cpp.obj	8a62cc380d40454a
+3	1421	7653714230144484	CMakeFiles/client.dir/src/TCPConnection.cpp.obj	129b9dae7d47f7ea
+1422	1721	7653714233091450	client.exe	69c46fda8d61ce9
