@@ -5,37 +5,12 @@
 // TCPConnection.cpp
 // TCPConnection.cpp
 // TCPConnection.cpp
+// TCPConnection.cpp
 #include "TCPConnection.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
 #include <cstring>
-
-bool TCPConnection::initiateHandshake() {
-    TCPPacket syn;
-    syn.SYN = true;
-    syn.seq_num = seq_num;
-    syn.payload = "";
-    sendPacket(syn);
-
-    std::string raw = sock->receiveRaw();
-    if (raw.empty()) return false;
-
-    TCPPacket response = TCPPacket::deserialize(raw);
-    if (response.SYN && response.ACK) {
-        ack_num = response.seq_num + 1;
-        TCPPacket ack_pkt;
-        ack_pkt.seq_num = ++seq_num;
-        ack_pkt.ack_num = ack_num;
-        ack_pkt.ACK = true;
-        ack_pkt.payload = "";
-        sendPacket(ack_pkt);
-        std::cout << "[" << role_label << "] Handshake completed (client side)." << std::endl;
-        return true;
-    }
-
-    return false;
-}
 
 TCPConnection::TCPConnection(SocketWrapper* socket, const std::string& role) {
     this->sock = socket;
@@ -70,6 +45,7 @@ void TCPConnection::receivePacketLoop() {
         std::string raw = sock->receiveRaw();
         if (raw.empty()) continue;
         TCPPacket pkt = TCPPacket::deserialize(raw);
+        std::cout << "[" << role_label << "] Received Packet -- SEQ: " << pkt.seq_num << ", ACK: " << pkt.ack_num << ", PAYLOAD: '" << pkt.payload << "'" << std::endl;
         processReceivedPacket(pkt);
     }
 }
@@ -137,7 +113,7 @@ void TCPConnection::handleACK(uint32_t ack) {
 void TCPConnection::printFromBuffer() {
     if (!recv_buffer.isEmpty()) {
         std::string word = recv_buffer.pop();
-        std::cout << "[" << role_label << "] << " << word << std::endl;
+        std::cout << "[" << role_label << "] Payload: '" << word << "'" << std::endl;
     }
 }
 
@@ -146,6 +122,14 @@ std::string TCPConnection::popWord() {
         return recv_buffer.pop();
     }
     return "";
+}
+
+void TCPConnection::debugPrintRecvBuffer() const {
+    auto snapshot = recv_buffer.snapshot();
+    std::cout << "[" << role_label << "] Current recv_buffer state (" << snapshot.size() << " items):\n";
+    for (const auto& [seq, word] : snapshot) {
+        std::cout << "  [" << seq << "] " << word << "\n";
+    }
 }
 
 void TCPConnection::initiateClose() {
@@ -227,12 +211,4 @@ bool TCPConnection::receiveHandshake() {
     }
 
     return false;
-}
-
-void TCPConnection::debugPrintRecvBuffer() const {
-    auto snapshot = recv_buffer.snapshot();
-    std::cout << "[" << role_label << "] Current recv_buffer state (" << snapshot.size() << " items):\n";
-    for (const auto& [seq, word] : snapshot) {
-        std::cout << "  [" << seq << "] " << word << "\n";
-    }
 }
