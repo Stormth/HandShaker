@@ -242,7 +242,3 @@ bool TCPConnection::receiveHandshake() {
 
     return false;
 }
-
-void TCPConnection::setLogEnabled(bool enabled) {
-    log_enabled = enabled;
-}

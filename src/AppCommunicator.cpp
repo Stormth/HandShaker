@@ -4,6 +4,7 @@
 // AppCommunicator.cpp
 // AppCommunicator.cpp
 // AppCommunicator.cpp
+// AppCommunicator.cpp
 #include "AppCommunicator.h"
 #include <iostream>
 #include <thread>
@@ -33,7 +34,9 @@ void AppCommunicator::startPrinting() {
         while (!connection->isClosed()) {
             std::string word = connection->popWord();
             if (!word.empty()) {
-                std::cout << "[" << connection->getRoleLabel() << "] Payload: '" << word << "'" << std::endl;
+                std::cout << "[receive message from "
+                          << (connection->getRoleLabel() == "Client" ? "Server" : "Client")
+                          << "]:" << word << std::endl;
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
