@@ -13,7 +13,7 @@ std::string TCPPacket::serialize() const {
     buffer.append(reinterpret_cast<const char*>(&seq_num), sizeof(seq_num));
     buffer.append(reinterpret_cast<const char*>(&ack_num), sizeof(ack_num));
 
-    uint8_t flags = 0;
+    uint8_t flags = 0;              //通过按位或运算，将标志符全部转换到8bit数据中
     if (SYN) flags |= 0b001;
     if (ACK) flags |= 0b010;
     if (FIN) flags |= 0b100;
@@ -28,7 +28,7 @@ std::string TCPPacket::serialize() const {
 
 TCPPacket TCPPacket::deserialize(const std::string& raw) {
     TCPPacket pkt;
-    size_t offset = 0;
+    size_t offset = 0;                                              //`offset` 是一个指针，用于记录在 `raw` 字节流中的解析位置
 
     std::memcpy(&pkt.seq_num, raw.data() + offset, sizeof(pkt.seq_num));
     offset += sizeof(pkt.seq_num);

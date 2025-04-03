@@ -3,6 +3,7 @@
 //
 // TCPBuffer.cpp
 #include "../include/TCPBuffer.h"
+#include <cstdint>
 
 TCPBuffer::TCPBuffer(size_t max_size) {
     this->max_size = max_size;

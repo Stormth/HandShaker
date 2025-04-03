@@ -18,7 +18,7 @@ std::vector<std::string> AppCommunicator::splitToWords(const std::string& input)
 
     while (iss >> word) {
         words.push_back(word);
-        words.push_back(" "); // 保留空格为独立单元
+        //words.push_back(" "); // 保留空格为独立单元
     }
 
     if (!words.empty()) words.pop_back(); // 去掉最后一个多余空格
