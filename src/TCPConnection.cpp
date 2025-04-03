@@ -19,6 +19,32 @@ TCPConnection::TCPConnection(SocketWrapper* socket, const std::string& role) {
     this->role_label = role;
 }
 
+bool TCPConnection::initiateHandshake() {
+    TCPPacket syn;
+    syn.SYN = true;
+    syn.seq_num = seq_num;
+    syn.payload = "";
+    sendPacket(syn);
+
+    std::string raw = sock->receiveRaw();
+    if (raw.empty()) return false;
+
+    TCPPacket response = TCPPacket::deserialize(raw);
+    if (response.SYN && response.ACK) {
+        ack_num = response.seq_num + 1;
+        TCPPacket ack_pkt;
+        ack_pkt.seq_num = ++seq_num;
+        ack_pkt.ack_num = ack_num;
+        ack_pkt.ACK = true;
+        ack_pkt.payload = "";
+        sendPacket(ack_pkt);
+        std::cout << "[" << role_label << "] Handshake completed (client side)." << std::endl;
+        return true;
+    }
+
+    return false;
+}
+
 TCPPacket TCPConnection::createDataPacket(const std::string& word) {
     TCPPacket pkt;
     pkt.seq_num = seq_num;
