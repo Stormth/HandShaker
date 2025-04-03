@@ -45,6 +45,14 @@ int main() {
         } else if (input == "/debug") {
             conn.debugPrintRecvBuffer();
             continue;
+        } else if (input == "/log on") {
+            conn.setLogEnabled(true);
+            std::cout << "[Server] Log enabled." << std::endl;
+            continue;
+        } else if (input == "/log off") {
+            conn.setLogEnabled(false);
+            std::cout << "[Server] Log disabled." << std::endl;
+            continue;
         }
 
         app.sendMessage(input);

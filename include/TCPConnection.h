@@ -32,6 +32,8 @@ public:
     std::string popWord();
     // 状态查询
     bool isClosed() const { return connection_closed; }
+    void setLogEnabled(bool enabled);
+    std::string getRoleLabel() const { return role_label; }
 
 
 private:
@@ -40,6 +42,8 @@ private:
     uint32_t ack_num = 0;
     bool connection_closed = false;
     std::string role_label = "TCP";
+    bool log_enabled = false;
+
 
     TCPBuffer recv_buffer;
     std::map<uint32_t, TCPPacket> send_window;

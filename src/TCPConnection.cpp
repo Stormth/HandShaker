@@ -6,6 +6,7 @@
 // TCPConnection.cpp
 // TCPConnection.cpp
 // TCPConnection.cpp
+// TCPConnection.cpp
 #include "TCPConnection.h"
 #include <iostream>
 #include <thread>
@@ -14,9 +15,9 @@
 
 TCPConnection::TCPConnection(SocketWrapper* socket, const std::string& role) {
     this->sock = socket;
-    this->seq_num = 0;
     this->ack_num = 0;
     this->role_label = role;
+    this->seq_num = (role == "Client") ? 1000 : 2000;  // Client从1000，Server从2000
 }
 
 bool TCPConnection::initiateHandshake() {
@@ -32,12 +33,14 @@ bool TCPConnection::initiateHandshake() {
     TCPPacket response = TCPPacket::deserialize(raw);
     if (response.SYN && response.ACK) {
         ack_num = response.seq_num + 1;
+
         TCPPacket ack_pkt;
         ack_pkt.seq_num = ++seq_num;
         ack_pkt.ack_num = ack_num;
         ack_pkt.ACK = true;
         ack_pkt.payload = "";
         sendPacket(ack_pkt);
+
         std::cout << "[" << role_label << "] Handshake completed (client side)." << std::endl;
         return true;
     }
@@ -71,7 +74,8 @@ void TCPConnection::receivePacketLoop() {
         std::string raw = sock->receiveRaw();
         if (raw.empty()) continue;
         TCPPacket pkt = TCPPacket::deserialize(raw);
-        std::cout << "[" << role_label << "] Received Packet -- SEQ: " << pkt.seq_num << ", ACK: " << pkt.ack_num << ", PAYLOAD: '" << pkt.payload << "'" << std::endl;
+        std::cout << "[" << role_label << "] Received Packet -- SEQ: " << pkt.seq_num
+                  << ", ACK: " << pkt.ack_num << ", PAYLOAD: '" << pkt.payload << "'" << std::endl;
         processReceivedPacket(pkt);
     }
 }
@@ -216,7 +220,7 @@ bool TCPConnection::receiveHandshake() {
     if (!syn_pkt.SYN) return false;
 
     ack_num = syn_pkt.seq_num + 1;
-    seq_num = 100;  // 初始可自定义
+    seq_num = 2000;  // server 起始 seq
 
     TCPPacket syn_ack;
     syn_ack.seq_num = seq_num;
@@ -237,4 +241,8 @@ bool TCPConnection::receiveHandshake() {
     }
 
     return false;
+}
+
+void TCPConnection::setLogEnabled(bool enabled) {
+    log_enabled = enabled;
 }
