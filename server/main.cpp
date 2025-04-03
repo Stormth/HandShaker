@@ -35,6 +35,7 @@ int main() {
 
     std::string input;
     while (true) {
+        std::cout << "Server>> " << std::flush;
         std::getline(std::cin, input);
 
         if (input == "exit") {
@@ -52,4 +53,3 @@ int main() {
     std::cout << "[Server] Connection closed." << std::endl;
     return 0;
 }
-

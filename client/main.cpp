@@ -28,6 +28,7 @@ int main() {
 
     std::string input;
     while (true) {
+        std::cout << "Client>> " << std::flush;
         std::getline(std::cin, input);
 
         if (input == "exit") {
