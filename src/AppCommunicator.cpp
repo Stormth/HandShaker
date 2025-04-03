@@ -32,7 +32,7 @@ void AppCommunicator::startPrinting() {
     std::thread([this]() {
         std::queue<std::string> display_buffer;
         while (!connection->isClosed()) {
-            std::string word = connection->popWord();  // 你需要实现 popWord()
+            std::string word = connection->popWord();
             if (!word.empty()) {
                 display_buffer.push(word);
             }

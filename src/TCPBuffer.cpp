@@ -37,3 +37,11 @@ void TCPBuffer::clearUpTo(uint32_t ack_num) {
         it = buffer.erase(it);
     }
 }
+
+std::vector<std::pair<uint32_t, std::string>> TCPBuffer::snapshot() const {
+    std::vector<std::pair<uint32_t, std::string>> result;
+    for (const auto& [seq, word] : buffer) {
+        result.emplace_back(seq, word);
+    }
+    return result;
+}

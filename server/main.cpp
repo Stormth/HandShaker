@@ -41,6 +41,9 @@ int main() {
             conn.initiateClose();
             conn.handleClose();
             break;
+        } else if (input == "/debug") {
+            conn.debugPrintRecvBuffer();
+            continue;
         }
 
         app.sendMessage(input);
@@ -49,3 +52,4 @@ int main() {
     std::cout << "[Server] Connection closed." << std::endl;
     return 0;
 }
+

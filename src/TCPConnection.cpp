@@ -228,3 +228,11 @@ bool TCPConnection::receiveHandshake() {
 
     return false;
 }
+
+void TCPConnection::debugPrintRecvBuffer() const {
+    auto snapshot = recv_buffer.snapshot();
+    std::cout << "[" << role_label << "] Current recv_buffer state (" << snapshot.size() << " items):\n";
+    for (const auto& [seq, word] : snapshot) {
+        std::cout << "  [" << seq << "] " << word << "\n";
+    }
+}

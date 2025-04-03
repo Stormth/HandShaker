@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <cstdint>
+#include <vector>
 
 class TCPBuffer {
 public:
@@ -16,6 +17,8 @@ public:
     bool isFull() const;
     bool isEmpty() const;
     void clearUpTo(uint32_t ack_num);                  // 删除所有 < ack_num
+    std::vector<std::pair<uint32_t, std::string>> snapshot() const;
+
 
 private:
     std::map<uint32_t, std::string> buffer; // 有序缓存（按序号）

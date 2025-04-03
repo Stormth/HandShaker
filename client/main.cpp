@@ -3,7 +3,6 @@
 //
 // client/main.cpp
 #include "../include/SocketWrapper.h"
-#include "../include/SocketWrapper.h"
 #include "../include/TCPConnection.h"
 #include "../include/AppCommunicator.h"
 #include <iostream>
@@ -11,7 +10,7 @@
 
 int main() {
     SocketWrapper sock;
-    if (!sock.connectTo("192.168.31.42", 8888)) {
+    if (!sock.connectTo("192.168.31.48", 8888)) {
         std::cerr << "[Client] Connection failed." << std::endl;
         return -1;
     }
@@ -35,6 +34,9 @@ int main() {
             conn.initiateClose();
             conn.handleClose();
             break;
+        } else if (input == "/debug") {
+            conn.debugPrintRecvBuffer();
+            continue;
         }
 
         app.sendMessage(input);
