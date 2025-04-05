@@ -18,5 +18,5 @@ public:
 
 private:
     TCPConnection* connection;
-    std::vector<std::string> splitToWords(const std::string& input);
+    std::vector<std::string> splitToChars(const std::string& input);
 };

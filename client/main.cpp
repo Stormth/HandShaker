@@ -2,9 +2,12 @@
 // Created by Storm on 2025/4/1.
 //
 // client/main.cpp
+// client/main.cpp
+// 修改自原始代码，使用 Logger 输出日志
 #include "../include/SocketWrapper.h"
 #include "../include/TCPConnection.h"
 #include "../include/AppCommunicator.h"
+#include "Logger.h"
 #include <iostream>
 #include <string>
 
@@ -20,7 +23,7 @@ int main() {
         std::cerr << "[Client] Handshake failed." << std::endl;
         return -1;
     }
-    std::cout << "[Client] Connected to server." << std::endl;
+    Logger() << "[Client] Connected to server.";
 
     AppCommunicator app(&conn);
     app.startReceiving();
@@ -28,7 +31,7 @@ int main() {
 
     std::string input;
     while (true) {
-        std::cout << "Client>> " << std::flush;
+        std::cout << "\nClient>> " << std::flush;
         std::getline(std::cin, input);
 
         if (input == "exit") {
@@ -40,11 +43,11 @@ int main() {
             continue;
         } else if (input == "/log on") {
             conn.setLogEnabled(true);
-            std::cout << "[Client] Log enabled." << std::endl;
+            Logger() << "[Client] Log enabled.";
             continue;
         } else if (input == "/log off") {
             conn.setLogEnabled(false);
-            std::cout << "[Client] Log disabled." << std::endl;
+            Logger() << "[Client] Log disabled.";
             continue;
         }
 

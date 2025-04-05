@@ -5,20 +5,34 @@
 // AppCommunicator.cpp
 // AppCommunicator.cpp
 // AppCommunicator.cpp
+// AppCommunicator.cpp
+//
+// 重构后的 AppCommunicator.cpp
+//
 #include "AppCommunicator.h"
 #include <iostream>
 #include <thread>
 #include <mutex>
-#include <cctype>
 
+// 构造函数保持不变
 AppCommunicator::AppCommunicator(TCPConnection* conn) {
     this->connection = conn;
 }
 
+// 将输入按字符拆分
+std::vector<std::string> AppCommunicator::splitToChars(const std::string& input) {
+    std::vector<std::string> chars;
+    for (char c : input) {
+        // 每个字符作为独立字符串
+        chars.push_back(std::string(1, c));
+    }
+    return chars;
+}
+
 void AppCommunicator::sendMessage(const std::string& message) {
-    auto words = splitToWords(message);
-    for (const auto& word : words) {
-        TCPPacket pkt = connection->createDataPacket(word);
+    auto chars = splitToChars(message);
+    for (const auto& ch : chars) {
+        TCPPacket pkt = connection->createDataPacket(ch);
         connection->sendPacket(pkt);
     }
 }
@@ -32,39 +46,13 @@ void AppCommunicator::startReceiving() {
 void AppCommunicator::startPrinting() {
     std::thread([this]() {
         while (!connection->isClosed()) {
-            std::string word = connection->popWord();
-            if (!word.empty()) {
+            std::string ch = connection->popWord();
+            if (!ch.empty()) {
                 std::cout << "[receive message from "
                           << (connection->getRoleLabel() == "Client" ? "Server" : "Client")
-                          << "]:" << word << std::endl;
+                          << "]:" << ch;
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }).detach();
-}
-
-std::vector<std::string> AppCommunicator::splitToWords(const std::string& input) {
-    std::vector<std::string> words;
-    std::string token;
-    for (size_t i = 0; i < input.size(); ++i) {
-        unsigned char c = input[i];
-        if (std::isspace(c)) {
-            if (!token.empty()) {
-                words.push_back(token);
-                token.clear();
-            }
-        } else if (std::ispunct(c)) {
-            if (!token.empty()) {
-                words.push_back(token);
-                token.clear();
-            }
-            words.emplace_back(1, c);
-        } else {
-            token += c;
-        }
-    }
-    if (!token.empty()) {
-        words.push_back(token);
-    }
-    return words;
 }

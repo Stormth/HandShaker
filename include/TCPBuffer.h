@@ -10,7 +10,7 @@
 
 class TCPBuffer {
 public:
-    TCPBuffer(size_t max_size = 50);
+    TCPBuffer(size_t max_size = 10);
 
     bool push(uint32_t seq, const std::string& word);  // 添加单词（按序号）
     std::string pop();                                 // 弹出最早的词

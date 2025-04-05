@@ -3,10 +3,10 @@ project(HandShaker_rebuild)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# 包含头文件路径
+# 指定包含头文件目录（Logger.h 等都放在 include/ 目录下）
 include_directories(include)
 
-# 通用源文件列表
+# 公共源文件列表
 set(SOURCES
         src/TCPPacket.cpp
         src/TCPConnection.cpp
@@ -15,19 +15,19 @@ set(SOURCES
         src/AppCommunicator.cpp
 )
 
-# 添加客户端
+# 构建客户端可执行文件
 add_executable(client
         client/main.cpp
         ${SOURCES}
 )
 
-# 添加服务端
+# 构建服务端可执行文件
 add_executable(server
         server/main.cpp
         ${SOURCES}
 )
 
-# Windows 兼容：链接 WinSock2
+# Windows 平台下需要链接 ws2_32 库
 if(WIN32)
     target_link_libraries(client ws2_32)
     target_link_libraries(server ws2_32)

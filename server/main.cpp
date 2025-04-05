@@ -3,14 +3,17 @@
 //
 // server/main.cpp
 // server/main.cpp
+// server/main.cpp
+// 修改自原始代码，使用 Logger 输出日志
 #include "../include/SocketWrapper.h"
 #include "../include/TCPConnection.h"
 #include "../include/AppCommunicator.h"
+#include "Logger.h"
 #include <iostream>
 #include <string>
 
 int main() {
-    std::cout << "[Server] Starting TCP server..." << std::endl;
+    Logger() << "[Server] Starting TCP server...";
 
     SocketWrapper server_socket;
     if (!server_socket.bindAndListen(8888)) {
@@ -18,16 +21,16 @@ int main() {
         return -1;
     }
 
-    std::cout << "[Server] Waiting for client to connect..." << std::endl;
+    Logger() << "[Server] Waiting for client to connect...";
     SocketWrapper client_socket = server_socket.acceptConnection();
-    std::cout << "[Server] Client connected." << std::endl;
+    Logger() << "[Server] Client connected.";
 
     TCPConnection conn(&client_socket, "Server");
     if (!conn.receiveHandshake()) {
         std::cerr << "[Server] Handshake failed." << std::endl;
         return -1;
     }
-    std::cout << "[Server] Connection established." << std::endl;
+    Logger() << "[Server] Connection established.";
 
     AppCommunicator app(&conn);
     app.startReceiving();
@@ -35,7 +38,7 @@ int main() {
 
     std::string input;
     while (true) {
-        std::cout << "Server>> " << std::flush;
+        std::cout << "\nServer>> " << std::flush;
         std::getline(std::cin, input);
 
         if (input == "exit") {
@@ -47,17 +50,18 @@ int main() {
             continue;
         } else if (input == "/log on") {
             conn.setLogEnabled(true);
-            std::cout << "[Server] Log enabled." << std::endl;
+            Logger() << "[Server] Log enabled.";
             continue;
         } else if (input == "/log off") {
             conn.setLogEnabled(false);
-            std::cout << "[Server] Log disabled." << std::endl;
+            Logger() << "[Server] Log disabled.";
             continue;
         }
 
         app.sendMessage(input);
     }
 
-    std::cout << "[Server] Connection closed." << std::endl;
+    Logger() << "[Server] Connection closed.";
     return 0;
 }
+
