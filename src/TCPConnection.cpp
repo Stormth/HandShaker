@@ -220,9 +220,10 @@ void TCPConnection::handleClose() {
 
         TCPPacket pkt = TCPPacket::deserialize(raw);
 
+        // 如果收到 FIN 报文，直接进入断连流程
         if (pkt.FIN) {
-            std::cout << "[" << role_label << "] Received FIN packet, initiating connection termination process.\n";
-            // Directly send ACK and FIN without prompting
+            std::cout << "[" << role_label << "] Received FIN packet, initiating connection termination process." << std::endl;
+            // 直接发送 ACK 确认 FIN
             TCPPacket ack_pkt;
             ack_pkt.seq_num = 0;
             ack_pkt.ack_num = pkt.seq_num + 1;
@@ -230,6 +231,7 @@ void TCPConnection::handleClose() {
             ack_pkt.payload = "";
             sendPacket(ack_pkt);
 
+            // 直接发送自己的 FIN 报文
             TCPPacket fin_pkt;
             fin_pkt.seq_num = seq_num;
             fin_pkt.ack_num = pkt.seq_num + 1;
@@ -237,9 +239,11 @@ void TCPConnection::handleClose() {
             fin_pkt.payload = "";
             sendPacket(fin_pkt);
 
-            std::cout << "[" << role_label << "] FIN sent, waiting for final ACK...\n";
-        } else if (pkt.ACK && pkt.ack_num == seq_num + 1) {
-            std::cout << "[" << role_label << "] Received final ACK, connection closed.\n";
+            std::cout << "[" << role_label << "] FIN sent, waiting for final ACK..." << std::endl;
+        }
+            // 如果收到最终 ACK（ack 值为自己 FIN 的 seq+1），则关闭连接
+        else if (pkt.ACK && pkt.ack_num == seq_num + 1) {
+            std::cout << "[" << role_label << "] Received final ACK, connection closed." << std::endl;
             connection_closed = true;
         }
     }
