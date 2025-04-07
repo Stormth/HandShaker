@@ -13,7 +13,7 @@
 
 int main() {
     SocketWrapper sock;
-    if (!sock.connectTo("192.168.31.42", 8888)) {
+    if (!sock.connectTo("127.0.0.1", 8888)) {
         std::cerr << "[Client] Connection failed." << std::endl;
         return -1;
     }
